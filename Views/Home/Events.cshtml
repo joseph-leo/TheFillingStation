@@ -3,15 +3,14 @@
 
     // Edit events here anytime (no DB/admin needed).
     // Tip: Add more events as you go — keep Date accurate and it will sort automatically.
-    var eventsList = new List<(DateTime Date, string Title, string Time, string Summary, string Badge)>
+    var eventsList = new List<Event>
     {
-        (new DateTime(2025, 12, 31), "New Year’s Eve Party", "9:00 PM – 12:00 AM", "Ring in the New Year at The Filling Station. Music, drinks, and a midnight countdown.", "Featured"),
+        new Event(new DateTime(2025, 12, 31), "New Year’s Eve Party", "9:00 PM – 12:00 AM", "Ring in the New Year at The Filling Station. Music, drinks, and a midnight countdown.", "Featured"),
 
         // Examples you can keep or delete:
         //(new DateTime(2026, 2, 9), "Super Bowl Watch Party", "5:00 PM – Close", "Game on, specials running, and plenty of seating.", "Watch Party"),
         //(new DateTime(2026, 3, 17), "St. Patrick’s Day Specials", "All Day", "Green drinks + featured specials.", "Specials"),
     };
-
     var ordered = eventsList.OrderBy(e => e.Date).ToList();
     var upcoming = ordered.FirstOrDefault(e => e.Date.Date >= DateTime.Today);
 }

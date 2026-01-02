@@ -1,20 +1,18 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TheFillingStation.Models;
 
+
 namespace TheFillingStation.Controllers
 {
-    public class HomeController : Controller
+    [Authorize]
+    public class HomeController(ILogger<HomeController> logger) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
+            var ev = new Event(new DateTime(2025, 12, 31), "New Year’s Eve Party", "9:00 PM – 12:00 AM", "Ring in the New Year at The Filling Station. Music, drinks, and a midnight countdown.", "Featured");
+            var newEv = ev with { Badge = "Hi" };
             return View();
         }
         public IActionResult Menu()
