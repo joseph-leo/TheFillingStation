@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -40,40 +40,7 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="mainNav">
-                    <ul class="navbar-nav ms-auto gap-lg-2">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Menu">Menu</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Events">Events</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Gallery">Gallery</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Laundromat">Laundromat</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
-                        </li>
-                    </ul>
-
-                    <div class="ms-lg-3 mt-3 mt-lg-0 d-flex gap-2">
-                        <a class="btn btn-fs-outline"
-                           asp-controller="Home"
-                           asp-action="Menu">
-                            View Menu
-                        </a>
-
-                        <a class="btn btn-fs"
-                           asp-controller="Home"
-                           asp-action="Events">
-                            What’s On
-                        </a>
-                    </div>
+                    <partial name="_LoginPartial"/>
                 </div>
             </div>
         </nav>

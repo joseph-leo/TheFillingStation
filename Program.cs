@@ -7,9 +7,6 @@ using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 var config = builder.Configuration.AddUserSecrets<Program>().Build();
@@ -20,13 +17,12 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .EnableTokenAcquisitionToCallDownstreamApi()
     .AddInMemoryTokenCaches();
 
-builder.Services.AddControllersWithViews(options =>
+builder.Services.AddAuthorization(options =>
 {
-    var policy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-    options.Filters.Add(new AuthorizeFilter(policy));
-}).AddMicrosoftIdentityUI();
+    options.AddPolicy("AdminOnly", policy => policy.RequireAuthenticatedUser());
+});
+
+builder.Services.AddControllersWithViews().AddMicrosoftIdentityUI();
 
 var app = builder.Build();
 
@@ -42,10 +38,17 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthorization();
+
+app.UseAuthentication()
+    .UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+        name: "admin",
+        pattern: "{controller=Admin}/{action=Index}/{id?}")
+    .RequireAuthorization("AdminOnly");
 
 app.Run();
