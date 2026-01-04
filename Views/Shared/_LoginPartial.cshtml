@@ -9,13 +9,16 @@
             </span>
         </li>
         <li class="nav-item">
+            @* ReSharper disable once Mvc.AreaNotResolved *@
             <a class="nav-link" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="nav-link" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn" asp-route-redirectUri="/admin">Sign in</a>
+            
+            @* ReSharper disable once Mvc.AreaNotResolved *@
+            <a class="nav-link" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign in</a>
         </li>
     }
 </ul>

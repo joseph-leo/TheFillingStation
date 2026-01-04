@@ -9,18 +9,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
-var config = builder.Configuration.AddUserSecrets<Program>().Build();
+builder.Configuration.AddUserSecrets<Program>();
+
+builder.Services.AddRazorPages();
 
 // Sign-in users with the Microsoft identity platform
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(config)
+    .AddMicrosoftIdentityWebApp(builder.Configuration)
     .EnableTokenAcquisitionToCallDownstreamApi()
     .AddInMemoryTokenCaches();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminOnly", policy => policy.RequireAuthenticatedUser());
-});
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("AdminOnly", policy => policy.RequireAuthenticatedUser());
 
 builder.Services.AddControllersWithViews().AddMicrosoftIdentityUI();
 
@@ -42,13 +42,17 @@ app.UseRouting();
 app.UseAuthentication()
     .UseAuthorization();
 
+app.MapRazorPages();
+
+app.MapAreaControllerRoute(
+        "admin_area",
+        "Admin",
+        "admin/{controller=Admin}/{action=Index}/{id?}")
+    .RequireAuthorization("AdminOnly");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapControllerRoute(
-        name: "admin",
-        pattern: "{controller=Admin}/{action=Index}/{id?}")
-    .RequireAuthorization("AdminOnly");
 
 app.Run();

@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TheFillingStation.Controllers;
+namespace TheFillingStation.Areas.Admin.Controllers;
 
-[Authorize(Roles = "AdminOnly")]
+[Area("Admin")]
+[Authorize(Policy = "AdminOnly")]
 public class AdminController : Controller
 {
     // GET
