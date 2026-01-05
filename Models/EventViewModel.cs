@@ -1,6 +1,6 @@
 ﻿namespace TheFillingStation.Models
 {
-    public record Event(
+    public record EventViewModel(
         DateTime Date, 
         string Title, 
         string Time,

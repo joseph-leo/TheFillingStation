@@ -1,7 +1,59 @@
-@model List<Event>
+﻿@model IEnumerable<EventViewModel>
 
 @{
-    ViewBag.Title = "Events List";
+    ViewData["Title"] = "Index";
 }
 
-<h2>@ViewBag.Title</h2>
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Summary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Badge)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Badge)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
