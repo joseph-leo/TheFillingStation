@@ -3,11 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - The Filling Station</title>
+    <title>@ViewBag.Title - The Filling Station</title>
     <link rel="icon" type="image/png" href="~/images/logo.png">
     <link rel="apple-touch-icon" href="~/images/logo.png">
-
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
@@ -17,7 +15,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid px-3 px-lg-4">
                 <a class="navbar-brand d-flex align-items-center gap-2"
-                   asp-controller="Home"
+                   asp-controller="Admin"
                    asp-action="Index">
 
                     <img src="~/images/logo.png"
@@ -40,7 +38,14 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="mainNav">
-                    <partial name="_LoginPartial"/>
+                    <ul class="navbar-nav ms-auto gap-lg-2">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Events" asp-action="Index">Events</a>
+                        </li>
+                        <li class="nav-item">
+                            <partial name="_LoginPartial"/>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>

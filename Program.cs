@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.EntityFrameworkCore;
+using TheFillingStation.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,9 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("AdminOnly", policy => policy.RequireAuthenticatedUser());
 
 builder.Services.AddControllersWithViews().AddMicrosoftIdentityUI();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
 var app = builder.Build();
 

@@ -1,12 +1,14 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TheFillingStation.Data;
 using TheFillingStation.Models;
 
 
 namespace TheFillingStation.Controllers
 {
-    public class HomeController(ILogger<HomeController> logger) : Controller
+    public class HomeController(ILogger<HomeController> logger, ApplicationDbContext context) : Controller
     {
         public IActionResult Index()
         {
@@ -21,9 +23,24 @@ namespace TheFillingStation.Controllers
         {
             return View();
         }
-        public IActionResult Events()
+        public async Task<IActionResult> Events()
         {
-            return View();
+            var eventEntities = await context.Events.ToListAsync();
+            List<EventDetailsVm> events = [];
+            foreach (var e in eventEntities)
+            {
+                events.Add(new EventDetailsVm
+                {
+                    Id =  e.Id,
+                    Title = e.Title,
+                    EventDate =  e.EventDate,
+                    StartTime =  e.StartTime,
+                    EndTime =  e.EndTime,
+                    Summary =   e.Summary,
+                    Badge =   e.Badge,
+                });
+            }
+            return View(events);
         }
         public IActionResult Laundromat()
         {

@@ -1,47 +1,35 @@
-﻿@{
-    ViewData["Title"] = "Events";
-
-    // Edit events here anytime (no DB/admin needed).
-    // Tip: Add more events as you go — keep Date accurate and it will sort automatically.
-    var eventsList = new List<EventViewModel>
-    {
-        new EventViewModel(new DateTime(2025, 12, 31), "New Year’s Eve Party", "9:00 PM – 12:00 AM", "Ring in the New Year at The Filling Station. Music, drinks, and a midnight countdown.", "Featured"),
-
-        // Examples you can keep or delete:
-        //(new DateTime(2026, 2, 9), "Super Bowl Watch Party", "5:00 PM – Close", "Game on, specials running, and plenty of seating.", "Watch Party"),
-        //(new DateTime(2026, 3, 17), "St. Patrick’s Day Specials", "All Day", "Green drinks + featured specials.", "Specials"),
-    };
-    var ordered = eventsList.OrderBy(e => e.Date).ToList();
-    var upcoming = ordered.FirstOrDefault(e => e.Date.Date >= DateTime.Today);
+﻿@model IEnumerable<EventDetailsVm>
+@{
+    ViewBag.Title = "Events";
 }
 
 <div class="container py-5 events-page">
     <div class="text-center mb-4">
-        <h1 class="display-6 fw-bold mb-2">Events</h1>
+        <h1 class="display-6 fw-bold mb-2">@ViewBag.Title</h1>
         <p class="text-muted mb-0">What’s happening this year at The Filling Station.</p>
     </div>
 
     @* Featured Upcoming *@
-    @if (upcoming != default)
+    @foreach(var featured in Model.Where(ev => ev.Badge == "Featured"))
     {
         <div class="card-fs p-4 p-md-5 mb-4 events-featured">
             <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
                 <span class="pill events-pill">Upcoming</span>
-                @if (!string.IsNullOrWhiteSpace(upcoming.Badge))
+                @if (!string.IsNullOrWhiteSpace(featured.Badge))
                 {
-                    <span class="pill events-pill-alt">@upcoming.Badge</span>
+                    <span class="pill events-pill-alt">@featured.Badge</span>
                 }
             </div>
 
-            <h2 class="h3 fw-bold mb-1">@upcoming.Title</h2>
+            <h2 class="h3 fw-bold mb-1">@featured.Title</h2>
 
             <div class="text-muted mb-3">
-                <strong>@upcoming.Date.ToString("dddd, MMMM d, yyyy")</strong>
+                <strong>@featured.EventDate.ToString("dddd, MMMM d, yyyy")</strong>
                 <span class="mx-2">•</span>
-                @upcoming.Time
+                @featured.StartTime
             </div>
 
-            <p class="mb-0">@upcoming.Summary</p>
+            <p class="mb-0">@featured.Summary</p>
         </div>
     }
 
@@ -57,9 +45,9 @@
         }
 
         <div class="events-list">
-            @foreach (var e in ordered)
+            @foreach (var e in Model.OrderByDescending(x => x.EventDate).ThenBy(x => x.StartTime))
             {
-                var monthLabel = e.Date.ToString("MMMM yyyy");
+                var monthLabel = e.EventDate.ToString("MMMM yyyy");
                 if (monthLabel != currentMonth)
                 {
                     currentMonth = monthLabel;
@@ -68,8 +56,8 @@
 
                 <div class="events-item">
                     <div class="events-date">
-                        <div class="events-day">@e.Date.ToString("dd")</div>
-                        <div class="events-dow">@e.Date.ToString("ddd")</div>
+                        <div class="events-day">@e.EventDate.ToString("dd")</div>
+                        <div class="events-dow">@e.EventDate.ToString("ddd")</div>
                     </div>
 
                     <div class="events-body">
@@ -82,7 +70,7 @@
                         </div>
 
                         <div class="text-muted small">
-                            @e.Date.ToString("MMMM d, yyyy") • @e.Time
+                            @e.EventDate.ToString("MMMM d, yyyy") • @e.StartTime
                         </div>
 
                         <div class="events-summary text-muted">
